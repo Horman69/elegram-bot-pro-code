@@ -16,6 +16,9 @@ function startTeacherChat(ctx) {
             ['/endchat']
         ]).resize()
     );
+    
+    // Добавьте лог для отладки
+    console.log(`Начат чат с преподавателем для пользователя ${userId}`);
 }
 
 function endTeacherChat(ctx) {
@@ -47,6 +50,9 @@ function handleChatMessage(ctx) {
     });
 
     ctx.reply('Ваше сообщение получено. Преподаватель ответит вам в ближайшее время.');
+    
+    // Добавьте лог для отладки
+    console.log(`Получено сообщение в чате с преподавателем от пользователя ${userId}: ${ctx.message.text}`);
     
     // Отправка уведомления администратору (опционально)
     sendChatMessageNotification(ctx.from, ctx.message.text);
