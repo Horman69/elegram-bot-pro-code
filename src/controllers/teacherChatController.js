@@ -47,6 +47,9 @@ function handleChatMessage(ctx) {
     });
 
     ctx.reply('Ваше сообщение получено. Преподаватель ответит вам в ближайшее время.');
+    
+    // Отправка уведомления администратору (опционально)
+    sendChatMessageNotification(ctx.from, ctx.message.text);
 }
 
 function sendChatHistoryToAdmin(user, chatHistory) {
@@ -60,6 +63,20 @@ function sendChatHistoryToAdmin(user, chatHistory) {
 
     sendMail({
         subject: 'Новый чат с преподавателем',
+        html: htmlContent
+    });
+}
+
+function sendChatMessageNotification(user, message) {
+    const htmlContent = `
+        <h2>Новое сообщение в чате с преподавателем</h2>
+        <p><strong>Пользователь:</strong> ${user.first_name} ${user.last_name || ''} (ID: ${user.id})</p>
+        <p><strong>Сообщение:</strong> ${message}</p>
+        <p><strong>Время:</strong> ${new Date().toLocaleString()}</p>
+    `;
+
+    sendMail({
+        subject: 'Новое сообщение в чате с преподавателем',
         html: htmlContent
     });
 }
