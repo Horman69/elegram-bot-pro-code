@@ -112,6 +112,7 @@ bot.command('stats', (ctx) => {
 });
 
 bot.on('text', (ctx) => {
+    console.log('Получено текстовое сообщение:', ctx.message.text);
     if (ctx.message.text.startsWith('/')) {
         // Если это команда, пропускаем
         return;

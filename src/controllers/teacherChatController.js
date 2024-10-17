@@ -5,12 +5,19 @@ const { sendMail } = require('../services/mailer');
 let activeChats = new Map();
 
 function startTeacherChat(ctx) {
+    console.log('Вызвана функция startTeacherChat');
     const userId = ctx.from.id;
+    console.log('ID пользователя:', userId);
+    
     if (activeChats.has(userId)) {
+        console.log('У пользователя уже есть активный чат');
         return ctx.reply('У вас уже есть активный чат с преподавателем. Чтобы завершить его, используйте команду /endchat');
     }
 
     activeChats.set(userId, { messages: [] });
+    console.log('Создан новый чат для пользователя:', userId);
+    console.log('Активные чаты после создания:', activeChats);
+    
     ctx.reply('Чат с преподавателем начат. Задайте свой вопрос, и преподаватель ответит вам в ближайшее время. Чтобы завершить чат, используйте команду /endchat', 
         Markup.keyboard([
             ['/endchat']
@@ -37,8 +44,13 @@ function endTeacherChat(ctx) {
 }
 
 function handleChatMessage(ctx) {
+    console.log('Вызвана функция handleChatMessage');
     const userId = ctx.from.id;
+    console.log('ID пользователя:', userId);
+    console.log('Активные чаты:', activeChats);
+    
     if (!activeChats.has(userId)) {
+        console.log('Активный чат не найден для пользователя:', userId);
         return ctx.reply('У вас нет активного чата с преподавателем. Чтобы начать чат, используйте команду /teacherchat');
     }
 
@@ -49,6 +61,7 @@ function handleChatMessage(ctx) {
         time: new Date().toISOString()
     });
 
+    console.log('Сообщение добавлено в чат:', chat.messages);
     ctx.reply('Ваше сообщение получено. Преподаватель ответит вам в ближайшее время.');
     
     // Добавьте лог для отладки
